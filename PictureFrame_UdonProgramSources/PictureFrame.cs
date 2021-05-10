@@ -10,11 +10,12 @@ public class PictureFrame : UdonSharpBehaviour {
     private float pictureIntervalTime = 0;
     private string screenName = "Screen";
     private MeshRenderer screenRenderer;
-    private int pictureIndex = 0;
+    private int pictureIndex = -1;
 
     void Start() {
         screenRenderer = gameObject.transform.Find(screenName).GetComponent<MeshRenderer>();
         pictureIntervalTime = Time.time + pictureInterval;
+        pictureChange();
     }
 
     private void Update() {
@@ -31,7 +32,7 @@ public class PictureFrame : UdonSharpBehaviour {
 
     private int nextPictureIndex() {
         if (randomOrder) {
-            return Random.Range(0, pictureList.Length - 1);
+            return Random.Range(0, pictureList.Length);
         }
         else {
             if(++pictureIndex >= pictureList.Length) {
