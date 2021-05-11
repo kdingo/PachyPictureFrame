@@ -8,24 +8,28 @@ public class PictureFrame : UdonSharpBehaviour {
     public bool randomOrder = false;
     public float pictureInterval = 15f;
     private float pictureIntervalTime = 0;
-    private string screenName = "Screen";
+    private readonly string screenName = "Screen";
     private MeshRenderer screenRenderer;
     private int pictureIndex = -1;
+    [UdonSynced] private int sync_pictureIndex = -1;
 
     void Start() {
         screenRenderer = gameObject.transform.Find(screenName).GetComponent<MeshRenderer>();
-        pictureIntervalTime = Time.time + pictureInterval;
-        pictureChange();
+        if (Networking.IsMaster) {
+            pictureIntervalTime = Time.time + pictureInterval;
+            pictureChange();
+        }
     }
 
     private void Update() {
-        if (Time.time >= pictureIntervalTime) {
+        if (Time.time >= pictureIntervalTime && Networking.IsMaster) {
             pictureChange();
         }
     }
 
     public void pictureChange() {
         pictureIndex = nextPictureIndex();
+        sync_pictureIndex = pictureIndex;
         screenRenderer.material.mainTexture = pictureList[pictureIndex];
         pictureIntervalTime = Time.time + pictureInterval;
     }
@@ -42,4 +46,14 @@ public class PictureFrame : UdonSharpBehaviour {
         return pictureIndex;
     }
 
+    public override void OnDeserialization() {
+        if (sync_pictureIndex != pictureIndex) {
+            pictureChangeDeserialize();
+        }
+    }
+
+    private void pictureChangeDeserialize() {
+        pictureIndex = sync_pictureIndex;
+        screenRenderer.material.mainTexture = pictureList[pictureIndex];
+    }
 }
