@@ -7,6 +7,7 @@ using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
 
+[UdonBehaviourSyncMode(BehaviourSyncMode.Manual)]
 public class PictureFrame : UdonSharpBehaviour {
     public Texture[] pictureList;
     private int[] shuffleOrder;
@@ -33,6 +34,7 @@ public class PictureFrame : UdonSharpBehaviour {
     private void Update() {
         if (Time.time >= pictureIntervalTime && Networking.IsMaster) {
             PictureChange();
+            RequestSerialization();
         }
     }
 
