@@ -48,9 +48,10 @@ There is no aspect ratio lock or auto resizing of different orientations. This p
 Sync Mode should be set to Manual, but should not break anything if set to Continuous.
 
 ## Making new frames
-You can create new picture frames, as long as you have a material slot for the picture to be displayed. The simplest custom frame is a plane object with one material, which is the picture material.
+You can create new picture frames, as long as you have a material slot for the picture to be displayed. The script must be placed on the mesh that will display the picture. The simplest custom frame is a plane object; it has one material, which is the material that will display the changing picture.
 
 ## Changelog
+- 2021/11/28 fixed the simple frames. Script must be placed on Picture mesh
 - 2021/11/25 added some simple frames, switched to Manual sync mode (VRCSDK3 2021.11.08.14.28)
 - 2021/06/04 first release (VRCSDK3 2021.04.21.11.57)
 
